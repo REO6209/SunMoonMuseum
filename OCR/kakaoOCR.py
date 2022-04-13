@@ -13,7 +13,6 @@ LIMIT_PX = 1024
 LIMIT_BYTE = 1024*1024  # 1MB
 LIMIT_BOX = 40
 
-
 def kakao_ocr_resize(image_path: str):
     """
     ocr detect/recognize api helper
@@ -70,30 +69,13 @@ def main():
         image_path = resize_impath
         print("원본 대신 리사이즈된 이미지를 사용합니다.")
 
-    # Bounding box, Text 받기
+    # 카카오 API에서 범위, 인식한 글씨 받기
     output = kakao_ocr(image_path, appkey).json()
     outputdata = json.dumps(output, ensure_ascii=False,sort_keys=True, indent=2)
-    # Bounding box 좌표 값, Text 값 print
-    # print("[OCR] output:\n{}\n".format(outputdata))
-
     # 받은 데이터 array로 변환
     outputdata = json.loads(outputdata)
-
+    # 결과값 출력
     for i in range(len(outputdata['result'])):
-        # Bounding box 모양으로 잘라서 보여주기 
-        x = outputdata['result'][i]['boxes'][0][0]
-        y = outputdata['result'][i]['boxes'][0][1]
-        w =  (outputdata['result'][i]['boxes'][1][0] -  outputdata['result'][i]['boxes'][0][0])
-        h =  (outputdata['result'][i]['boxes'][2][1] -  outputdata['result'][i]['boxes'][0][1])
-
-        # 원본 이미지
-        org_image = cv2.imread(os.path.expanduser(r'INPUT_path.png'))
-        cv2.namedWindow("Images")
-
-        img_trim = org_image[y:y+h, x:x+w]  # 자른 이미지
-        # 자른 이미지 저장 - 확인용
-        cv2.imwrite(r'SAVE_path'+str(i)+'.png', img_trim)
-        # 결과값 출력
         print(outputdata['result'][i]['recognition_words'][0])
 
 if __name__ == "__main__":
