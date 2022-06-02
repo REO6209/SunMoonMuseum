@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+        <a href="{% url 'curatorapp:permanent_list' %}">
+                성설전시실
+        </a>
+        <a href="{% url 'curatorapp:bible_list' %}">
+                성서전시실
+        </a>
+        <a href="{% url 'curatorapp:special_list' %}">
+                특별전시실
+        </a>
+</div>
+
+{% endblock %}
